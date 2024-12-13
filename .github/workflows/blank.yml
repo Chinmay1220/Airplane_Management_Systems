@@ -23,7 +23,7 @@ jobs:
           pip install sqlfluff
 
       - name: Validate SQL Code
-        run: sqlfluff lint ./sql/
+        run: sqlfluff lint P4_Group2_Airline_Management_System
 
       - name: Run Tests
         run: ./run_tests.sh

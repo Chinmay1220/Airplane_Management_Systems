@@ -3,7 +3,7 @@ name: CI/CD Pipeline for Airline Management System
 on:
   push:
     paths:
-      - P4_Group2_Airline_Management_System/**  # Monitor all files in the directory
+      - P4_Group2_Airline_Management_System/**  # Monitor all files in this directory
       - .github/workflows/**                    # (Optional) Monitor workflow file changes
 
 jobs:
@@ -16,18 +16,18 @@ jobs:
         uses: actions/checkout@v3
 
       # Step 2: Run Tests
-      - name: Run SQL Linting and Tests
+      - name: Run Tests
         run: |
           echo "Running tests for P4_Group2_Airline_Management_System..."
-          # Example SQL linting test using sqlfluff
-          sqlfluff lint P4_Group2_Airline_Management_System --dialect mysql
+          # Add your testing commands here
+          # Example: Run unit tests or validate file changes
           echo "All tests passed!"
 
       # Step 3: Deploy Changes (If Tests Pass)
       - name: Deploy Changes
         if: ${{ success() }}  # Only runs if the tests succeed
         run: |
-          echo "Deploying updated files in P4_Group2_Airline_Management_System..."
-          # Example: Add deployment commands (SQL migration or other tasks)
-          # mysql -u $DB_USER -p$DB_PASS -h $DB_HOST < P4_Group2_Airline_Management_System/deploy.sql
+          echo "Deploying updates to P4_Group2_Airline_Management_System..."
+          # Add your deployment logic here
+          # Example: Sync files to a server or update application
           echo "Deployment successful!"

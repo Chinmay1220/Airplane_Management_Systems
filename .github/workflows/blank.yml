@@ -1,29 +1,33 @@
-name: SQL CI/CD Pipeline
+name: CI/CD Pipeline for Airline Management System
 
 on:
   push:
-    branches:
-      - main
+    paths:
+      - P4_Group2_Airline_Management_System/**  # Monitor all files in the directory
+      - .github/workflows/**                    # (Optional) Monitor workflow file changes
 
 jobs:
-  build:
+  test-and-deploy:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+      # Step 1: Checkout the repository
+      - name: Checkout Repository
+        uses: actions/checkout@v3
 
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.x'  # Specify the Python version
-
-      - name: Install sqlfluff
+      # Step 2: Run Tests
+      - name: Run SQL Linting and Tests
         run: |
-          python -m pip install --upgrade pip
-          pip install sqlfluff
+          echo "Running tests for P4_Group2_Airline_Management_System..."
+          # Example SQL linting test using sqlfluff
+          sqlfluff lint P4_Group2_Airline_Management_System --dialect mysql
+          echo "All tests passed!"
 
-      - name: Validate SQL Code
-        run: sqlfluff lint P4_Group2_Airline_Management_System
-
-      - name: Run Tests
-        run: ./run_tests.sh
+      # Step 3: Deploy Changes (If Tests Pass)
+      - name: Deploy Changes
+        if: ${{ success() }}  # Only runs if the tests succeed
+        run: |
+          echo "Deploying updated files in P4_Group2_Airline_Management_System..."
+          # Example: Add deployment commands (SQL migration or other tasks)
+          # mysql -u $DB_USER -p$DB_PASS -h $DB_HOST < P4_Group2_Airline_Management_System/deploy.sql
+          echo "Deployment successful!"

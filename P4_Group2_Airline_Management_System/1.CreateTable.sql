@@ -8,7 +8,6 @@ CREATE TABLE Airport (
     AirportName VARCHAR(100),
     AirportLocation VARCHAR(100)
 );
-
 --Create table for Airline
 create TABLE Airline (
     AirlineID INT PRIMARY KEY IDENTITY(10,3),

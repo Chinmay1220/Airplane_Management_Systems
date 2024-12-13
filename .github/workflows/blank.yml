@@ -1,0 +1,33 @@
+name: SQL CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Validate SQL Code
+        run: sqlfluff lint ./sql/
+
+      - name: Run Tests
+        run: ./run_tests.sh  # Run unit tests using tSQLt or similar
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Deploy to Test Database
+        run: flyway migrate -url=jdbc:sqlserver://test-db-url -user=<user> -password=<password> -locations=filesystem:./sql/
+
+      - name: Deploy to Production
+        if: github.ref == 'refs/heads/main'
+        run: flyway migrate -url=jdbc:sqlserver://prod-db-url -user=<user> -password=<password> -locations=filesystem:./sql/
